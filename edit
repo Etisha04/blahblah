@@ -1,0 +1,106 @@
+import AdminSidebar from "../AdminSidebar";
+import { Outlet } from "react-router-dom";
+
+const AdminLayout = () => {
+  return (
+    <div style={{ display: "flex" }}>
+      <AdminSidebar />
+      <main style={{ flex: 1 }}>
+        <Outlet />
+      </main>
+    </div>
+  );
+};
+
+export default AdminLayout;
+app.jsx
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import AdminLayout from "./components/layout/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
+// import other pages as needed
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="dashboard" element={<Dashboard />} />
+          {/* Add more routes here later */}
+        </Route>
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
+
+axios
+import axios from "axios";
+
+const instance = axios.create({
+  baseURL: "https://your-backend-api.com/api", // Replace this
+});
+
+instance.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+export default instance;
+dashboard.jsx
+import { useEffect, useState } from "react";
+import axios from "../../utils/axios";
+
+const Dashboard = () => {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    axios.get("/admin/analytics").then((res) => {
+      setData(res.data);
+    }).catch((err) => {
+      console.error("Analytics API failed", err);
+    });
+  }, []);
+
+  return (
+    <div className="dashboard">
+      <div className="widget-container">
+        <div className="widget">
+          <div className="widget-info">
+            <p>Users</p>
+            <h4>{data?.users || 0}</h4>
+          </div>
+          <div className="widget-circle">
+            <span>{data?.users}</span>
+          </div>
+        </div>
+
+        <div className="widget">
+          <div className="widget-info">
+            <p>Products</p>
+            <h4>{data?.products || 0}</h4>
+          </div>
+          <div className="widget-circle">
+            <span>{data?.products}</span>
+          </div>
+        </div>
+
+        <div className="widget">
+          <div className="widget-info">
+            <p>Orders</p>
+            <h4>{data?.orders || 0}</h4>
+          </div>
+          <div className="widget-circle">
+            <span>{data?.orders}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;
+
