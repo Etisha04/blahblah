@@ -1,31 +1,130 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-    public class OrderManagementDTO
-    {
-        public int UserID { get; set; }
-        public int ProductID { get; set; }
-        public int Quantity { get; set; }
-        public decimal TotalPrice { get; set; }
-        public string ShippingAddress { get; set; }
-        public string OrderStatus { get; set; }
-        public string PaymentStatus { get; set; }
-    }
+const OrdersPage = () => {
+  const [orders, setOrders] = useState([]);
+  const token = localStorage.getItem("token");
 
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get("https://localhost:7162/api/Admin/Get All Orders", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setOrders(response.data);
+      } catch (error) {
+        console.error("Failed to fetch orders:", error);
+      }
+    };
 
-    public class ProductManagementDTO
-    {
-        [Key]
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public decimal Price { get; set; }
-        public string Category { get; set; } = string.Empty;
-        public string ImageURL { get; set; } = string.Empty;
-    }
+    fetchOrders();
+  }, [token]);
 
-public class UserDTO
-{
-    public string Name { get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; }
-    public string ShippingAddress { get; set; }
-    public string PaymentDetails { get; set; }
-}
+  return (
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4 text-gray-800">Orders</h2>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white shadow-md rounded-lg">
+          <thead>
+            <tr className="bg-gray-200 text-left">
+              <th className="py-2 px-4">User ID</th>
+              <th className="py-2 px-4">Product ID</th>
+              <th className="py-2 px-4">Quantity</th>
+              <th className="py-2 px-4">Total Price</th>
+              <th className="py-2 px-4">Shipping Address</th>
+              <th className="py-2 px-4">Order Status</th>
+              <th className="py-2 px-4">Payment Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.map((order, index) => (
+              <tr key={index} className="border-t">
+                <td className="py-2 px-4">{order.userID}</td>
+                <td className="py-2 px-4">{order.productID}</td>
+                <td className="py-2 px-4">{order.quantity}</td>
+                <td className="py-2 px-4">₹{order.totalPrice.toFixed(2)}</td>
+                <td className="py-2 px-4">{order.shippingAddress}</td>
+                <td className="py-2 px-4">{order.orderStatus}</td>
+                <td className="py-2 px-4">{order.paymentStatus}</td>
+              </tr>
+            ))}
+            {orders.length === 0 && (
+              <tr>
+                <td colSpan="7" className="text-center py-4 text-gray-500">
+                  No orders available.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+export default OrdersPage;
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
+const UsersPage = () => {
+  const [users, setUsers] = useState([]);
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get("https://localhost:7162/api/Admin/Get All Users", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Failed to fetch users:", error);
+      }
+    };
+
+    fetchUsers();
+  }, [token]);
+
+  return (
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4 text-gray-800">Users</h2>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white shadow-md rounded-lg">
+          <thead>
+            <tr className="bg-gray-200 text-left">
+              <th className="py-2 px-4">Name</th>
+              <th className="py-2 px-4">Email</th>
+              <th className="py-2 px-4">Password</th>
+              <th className="py-2 px-4">Shipping Address</th>
+              <th className="py-2 px-4">Payment Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user, index) => (
+              <tr key={index} className="border-t">
+                <td className="py-2 px-4">{user.name}</td>
+                <td className="py-2 px-4">{user.email}</td>
+                <td className="py-2 px-4">{user.password}</td>
+                <td className="py-2 px-4">{user.shippingAddress}</td>
+                <td className="py-2 px-4">{user.paymentDetails}</td>
+              </tr>
+            ))}
+            {users.length === 0 && (
+              <tr>
+                <td colSpan="5" className="text-center py-4 text-gray-500">
+                  No users found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+export default UsersPage;
