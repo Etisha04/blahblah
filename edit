@@ -1,167 +1,413 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { AiFillFileText } from "react-icons/ai";
-import { FaChartBar, FaChartLine, FaChartPie } from "react-icons/fa";
-import { HiMenuAlt4 } from "react-icons/hi";
-import { IoIosPeople } from "react-icons/io";
-import { RiDashboardFill, RiShoppingBag3Fill } from "react-icons/ri";
+JwtHepler.cs
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
-const AdminSidebar = () => {
-  const location = useLocation();
-  const [showModal, setShowModal] = useState(false);
-  const [phoneActive, setPhoneActive] = useState(window.innerWidth < 1100);
+namespace Walmart.Helpers
+{
+    public class JwtHelper
+    {
+        private readonly IConfiguration _configuration;
 
-  const resizeHandler = () => {
-    setPhoneActive(window.innerWidth < 1100);
-  };
-
-  useEffect(() => {
-    window.addEventListener("resize", resizeHandler);
-
-    return () => {
-      window.removeEventListener("resize", resizeHandler);
-    };
-  }, []);
-
-  return (
-    <>
-      {phoneActive && (
-        <button id="hamburger" onClick={() => setShowModal(true)}>
-          <HiMenuAlt4 />
-        </button>
-      )}
-
-      <aside
-        style={
-          phoneActive
-            ? {
-                width: "20rem",
-                height: "100vh",
-                position: "fixed",
-                top: 0,
-                left: showModal ? "0" : "-20rem",
-                transition: "all 0.5s",
-              }
-            : {}
+        public JwtHelper(IConfiguration configuration)
+        {
+            _configuration = configuration;
         }
-      >
-        <h2>Logo</h2>
-        <DivOne location={location} />
-        <DivTwo location={location} />
-        <DivThree location={location} />
 
-        {phoneActive && (
-          <button id="close-sidebar" onClick={() => setShowModal(false)}>
-            Close
-          </button>
-        )}
-      </aside>
-    </>
-  );
-};
+        public string GenerateToken(int userId, string email, string role)
+        {
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+                new Claim(ClaimTypes.Email, email),
+                new Claim(ClaimTypes.Role, role)
+            };
 
-const DivOne = ({ location }) => (
-  <div>
-    <h5>Dashboard</h5>
-    <ul>
-      <Li
-        url="/admin/dashboard"
-        text="Dashboard"
-        Icon={RiDashboardFill}
-        location={location}
-      />
-      <Li
-        url="/admin/product"
-        text="Product"
-        Icon={RiShoppingBag3Fill}
-        location={location}
-      />
-      <Li
-        url="/admin/customer"
-        text="Customer"
-        Icon={IoIosPeople}
-        location={location}
-      />
-      <Li
-        url="/admin/transaction"
-        text="Transaction"
-        Icon={AiFillFileText}
-        location={location}
-      />
-    </ul>
-  </div>
-);
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-const DivTwo = ({ location }) => (
-  <div>
-    <h5>Charts</h5>
-    <ul>
-      <Li
-        url="/admin/chart/bar"
-        text="Bar"
-        Icon={FaChartBar}
-        location={location}
-      />
-      <Li
-        url="/admin/chart/pie"
-        text="Pie"
-        Icon={FaChartPie}
-        location={location}
-      />
-      <Li
-        url="/admin/chart/line"
-        text="Line"
-        Icon={FaChartLine}
-        location={location}
-      />
-    </ul>
-  </div>
-);
+            var token = new JwtSecurityToken(
+                _configuration["Jwt:Issuer"],
+                _configuration["Jwt:Audience"],
+                claims,
+                expires: DateTime.Now.AddDays(2),
+                signingCredentials: credentials
+            );
 
-const DivThree = ({ location }) => (
-  <div>
-    <h5>Apps</h5>
-    <ul>
-      <Li
-        url="/admin/app/stopwatch"
-        text="Stopwatch"
-        Icon={FaStopwatch}
-        location={location}
-      />
-      <Li
-        url="/admin/app/coupon"
-        text="Coupon"
-        Icon={RiCoupon3Fill}
-        location={location}
-      />
-      <Li
-        url="/admin/app/toss"
-        text="Toss"
-        Icon={FaGamepad}
-        location={location}
-      />
-    </ul>
-  </div>
-);
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+    }
+}
+Program.cs
+using Microsoft.EntityFrameworkCore;
+using Walmart.Data;
+using Walmart.Helpers;
+using Walmart.Repositories.Interface;
+using Walmart.Repositories.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
-const Li = ({ url, text, location, Icon }) => (
-  <li
-    style={{
-      backgroundColor: location.pathname.includes(url)
-        ? "rgba(0,115,255,0.1)"
-        : "white",
-    }}
-  >
-    <Link
-      to={url}
-      style={{
-        color: location.pathname.includes(url) ? "rgb(0,115,255)" : "black",
-      }}
-    >
-      <Icon />
-      {text}
-    </Link>
-  </li>
-);
+var builder = WebApplication.CreateBuilder(args);
 
-export default AdminSidebar;
+// Add AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+// Add DbContext
+builder.Services.AddDbContext<HeroDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Add Repository Registrations
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+builder.Services.AddScoped<IProductManagementRepository, ProductManagementRepository>();
+builder.Services.AddScoped<IOrderManagementRepository, OrderManagementRepository>();
+builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
+
+//Add Cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", builder =>
+    {
+        builder
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
+// Add JwtHelper
+builder.Services.AddSingleton<JwtHelper>();
+
+// Add Controllers and Swagger
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Walmart", Version = "v1" });
+    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = JwtBearerDefaults.AuthenticationScheme
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = JwtBearerDefaults.AuthenticationScheme
+                },
+                Scheme = "Oauth2",
+                Name = JwtBearerDefaults.AuthenticationScheme,
+                In = ParameterLocation.Header
+            },
+            new List<string>()
+        }
+    });
+});
+
+// Add Authentication and JWT Configuration
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    });
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseCors("AllowReactApp");
+app.MapControllers();
+
+app.Run();
+AdminController.cs
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using Walmart.Models.DTO;
+using Walmart.Repositories.Interface;
+using Microsoft.AspNetCore.Authorization;
+using Walmart.Models.Domain;
+using Walmart.Repositories.Repository;
+using System;
+
+namespace Walmart.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize(Roles = "Admin")]
+    public class AdminController : ControllerBase
+    {
+        private readonly IAdminRepository _adminRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IProductManagementRepository _productRepository;
+        private readonly IOrderManagementRepository _orderRepository;
+        private readonly IMapper _mapper;
+
+        public AdminController(
+            IAdminRepository adminRepository,
+            IUserRepository userRepository,
+            IProductManagementRepository productRepository,
+            IOrderManagementRepository orderRepository,
+            IMapper mapper)
+        {
+            _adminRepository = adminRepository;
+            _userRepository = userRepository;
+            _productRepository = productRepository;
+            _orderRepository = orderRepository;
+            _mapper = mapper;
+        }
+
+        [HttpGet("Get All Users")]
+        public async Task<IActionResult> GetUsers()
+        {
+            try
+            {
+                var users = await _userRepository.GetAllUsersAsync();
+                var userDTOs = _mapper.Map<IEnumerable<UserDTO>>(users); // Map to DTOs
+                return Ok(userDTOs);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("Get All Products")]
+        public async Task<IActionResult> GetProducts()
+        {
+            try
+            {
+                var products = await _productRepository.GetAllProductsAsync();
+                var productDTOs = _mapper.Map<IEnumerable<ProductManagementDTO>>(products); // Map to DTOs
+                return Ok(productDTOs);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("Get All Orders")]
+        public async Task<IActionResult> GetOrders()
+        {
+            try
+            {
+                var orders = await _orderRepository.GetAllOrdersAsync();
+                var orderDTOs = _mapper.Map<IEnumerable<OrderManagementDTO>>(orders); // Map to DTOs
+                return Ok(orderDTOs);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("Get All Admins")]
+        public async Task<IActionResult> GetAdmins()
+        {
+            try
+            {
+                var admins = await _adminRepository.GetAllAdminsAsync();
+                var adminDTOs = _mapper.Map<IEnumerable<AdminDto>>(admins); // Map to DTOs
+                return Ok(adminDTOs);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("Get Orders Of User")]
+        public async Task<IActionResult> GetOrdersByUserId(int userId)
+        {
+            try
+            {
+                var orders = await _orderRepository.GetAllOrdersAsync();
+                var userOrders = orders.Where(o => o.UserID == userId).ToList();
+
+                if (userOrders == null || !userOrders.Any())
+                {
+                    return NotFound($"No orders found for User ID {userId}.");
+                }
+
+                // Map list of OrderManagement to list of OrderManagementDTO
+                var orderDTOs = _mapper.Map<IEnumerable<OrderManagementDTO>>(userOrders);
+
+                return Ok(orderDTOs);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("Analytics")]
+        public async Task<IActionResult> DataAnalytics()
+        {
+            try
+            {
+                var adminCount = (await _adminRepository.GetAllAdminsAsync()).Count();
+                var productCount = (await _productRepository.GetAllProductsAsync()).Count();
+                var orderCount = (await _orderRepository.GetAllOrdersAsync()).Count();
+                var userCount = (await _userRepository.GetAllUsersAsync()).Count();
+
+                var analyticsDTO = new AnalyticsDTO
+                {
+                    Users = userCount,
+                    Products = productCount,
+                    Orders = orderCount,
+                    Admins = adminCount,
+                };
+
+                return Ok(analyticsDTO);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+    }
+}
+AuthController.cs
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using Walmart.Models.DTO;
+using Walmart.Repositories.Interface;
+using Walmart.Helpers;
+using Walmart.Models.Domain;
+using Microsoft.Extensions.Logging;
+
+namespace Walmart.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AuthController : ControllerBase
+    {
+        private readonly IUserRepository _userRepository;
+        private readonly IAdminRepository _adminRepository;
+        private readonly JwtHelper _jwtHelper;
+        private readonly IMapper _mapper;
+        private readonly ILogger<AuthController> _logger;
+
+        public AuthController(
+            IUserRepository userRepository,
+            IAdminRepository adminRepository,
+            JwtHelper jwtHelper,
+            IMapper mapper,
+            ILogger<AuthController> logger)
+        {
+            _userRepository = userRepository;
+            _adminRepository = adminRepository;
+            _jwtHelper = jwtHelper;
+            _mapper = mapper;
+            _logger = logger;
+        }
+
+        [HttpPost("User Registration")]
+        public async Task<IActionResult> RegisterUser([FromBody] RegisterDTO registerDTO)
+        {
+            try
+            {
+                if (await _userRepository.GetUserByEmailAsync(registerDTO.Email) != null)
+                    return BadRequest("User already exists");
+
+                var user = _mapper.Map<User>(registerDTO);
+                user.Role = "User";
+
+                await _userRepository.AddUserAsync(user);
+                return Ok("User registered successfully");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred during User Registration");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPost("Admin Registration")]
+        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterDTO registerDTO)
+        {
+            try
+            {
+                if (await _adminRepository.GetAdminByEmailAsync(registerDTO.Email) != null)
+                    return BadRequest("Admin already exists");
+
+                var admin = _mapper.Map<Admin>(registerDTO);
+                admin.Role = "Admin";
+
+                await _adminRepository.AddAdminAsync(admin);
+                return Ok("Admin registered successfully");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"An error occurred during Admin Registration: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+
+        }
+
+        [HttpPost("User Login")]
+        public async Task<IActionResult> UserLogin([FromBody] LoginDTO loginDTO)
+        {
+            try
+            {
+                var user = await _userRepository.GetUserByEmailAsync(loginDTO.Email);
+                if (user == null || user.Password != loginDTO.Password)
+                    return Unauthorized("Invalid credentials");
+
+                var token = _jwtHelper.GenerateToken(user.UserID, user.Email, user.Role);
+                return Ok(new { Token = token });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred during User Login");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPost("Admin Login")]
+        public async Task<IActionResult> AdminLogin([FromBody] LoginDTO loginDTO)
+        {
+            try
+            {
+                var admin = await _adminRepository.GetAdminByEmailAsync(loginDTO.Email);
+                if (admin == null || admin.Password != loginDTO.Password)
+                    return Unauthorized("Invalid credentials");
+
+                var token = _jwtHelper.GenerateToken(admin.AdminID, admin.Email, admin.Role);
+                return Ok(new { Token = token });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred during Admin Login");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+    }
+}
