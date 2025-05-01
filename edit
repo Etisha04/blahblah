@@ -1,413 +1,82 @@
-JwtHepler.cs
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+Login.jsx
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-namespace Walmart.Helpers
-{
-    public class JwtHelper
-    {
-        private readonly IConfiguration _configuration;
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-        public JwtHelper(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
-        public string GenerateToken(int userId, string email, string role)
-        {
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-                new Claim(ClaimTypes.Email, email),
-                new Claim(ClaimTypes.Role, role)
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                _configuration["Jwt:Issuer"],
-                _configuration["Jwt:Audience"],
-                claims,
-                expires: DateTime.Now.AddDays(2),
-                signingCredentials: credentials
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const response = await fetch('https://localhost:5001/api/auth/userlogin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    if (response.ok) {
+      const data = await response.json();
+      localStorage.setItem('jwtToken', data.token); // Save token in localStorage
+      navigate('/dashboard'); // Redirect to dashboard after login
+    } else {
+      alert('Login failed!');
     }
-}
-Program.cs
-using Microsoft.EntityFrameworkCore;
-using Walmart.Data;
-using Walmart.Helpers;
-using Walmart.Repositories.Interface;
-using Walmart.Repositories.Repository;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.OpenApi.Models;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+  };
 
-var builder = WebApplication.CreateBuilder(args);
+  return (
+    <form onSubmit={handleLogin}>
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
+      <button type="submit">Login</button>
+    </form>
+  );
+};
 
-// Add AutoMapper
-builder.Services.AddAutoMapper(typeof(MappingProfile));
+export default Login;
 
-// Add DbContext
-builder.Services.AddDbContext<HeroDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+Dashboard.jsx
+import React, { useEffect, useState } from 'react';
 
-// Add Repository Registrations
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IAdminRepository, AdminRepository>();
-builder.Services.AddScoped<IProductManagementRepository, ProductManagementRepository>();
-builder.Services.AddScoped<IOrderManagementRepository, OrderManagementRepository>();
-builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
+const Dashboard = () => {
+  const [data, setData] = useState([]);
+  const token = localStorage.getItem('jwtToken');
 
-//Add Cors
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowReactApp", builder =>
-    {
-        builder
-            .AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-    });
-});
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch('https://localhost:5001/api/admin/GetAllUsers', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      const result = await response.json();
+      setData(result);
+    };
 
-// Add JwtHelper
-builder.Services.AddSingleton<JwtHelper>();
+    fetchData();
+  }, [token]);
 
-// Add Controllers and Swagger
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Walmart", Version = "v1" });
-    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = JwtBearerDefaults.AuthenticationScheme
-    });
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = JwtBearerDefaults.AuthenticationScheme
-                },
-                Scheme = "Oauth2",
-                Name = JwtBearerDefaults.AuthenticationScheme,
-                In = ParameterLocation.Header
-            },
-            new List<string>()
-        }
-    });
-});
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      <ul>
+        {data.map((item) => (
+          <li key={item.id}>{item.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
-// Add Authentication and JWT Configuration
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-    });
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseCors("AllowReactApp");
-app.MapControllers();
-
-app.Run();
-AdminController.cs
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using Walmart.Models.DTO;
-using Walmart.Repositories.Interface;
-using Microsoft.AspNetCore.Authorization;
-using Walmart.Models.Domain;
-using Walmart.Repositories.Repository;
-using System;
-
-namespace Walmart.Controllers
-{
-    [Route("api/[controller]")]
-    [ApiController]
-    [Authorize(Roles = "Admin")]
-    public class AdminController : ControllerBase
-    {
-        private readonly IAdminRepository _adminRepository;
-        private readonly IUserRepository _userRepository;
-        private readonly IProductManagementRepository _productRepository;
-        private readonly IOrderManagementRepository _orderRepository;
-        private readonly IMapper _mapper;
-
-        public AdminController(
-            IAdminRepository adminRepository,
-            IUserRepository userRepository,
-            IProductManagementRepository productRepository,
-            IOrderManagementRepository orderRepository,
-            IMapper mapper)
-        {
-            _adminRepository = adminRepository;
-            _userRepository = userRepository;
-            _productRepository = productRepository;
-            _orderRepository = orderRepository;
-            _mapper = mapper;
-        }
-
-        [HttpGet("Get All Users")]
-        public async Task<IActionResult> GetUsers()
-        {
-            try
-            {
-                var users = await _userRepository.GetAllUsersAsync();
-                var userDTOs = _mapper.Map<IEnumerable<UserDTO>>(users); // Map to DTOs
-                return Ok(userDTOs);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
-
-        [HttpGet("Get All Products")]
-        public async Task<IActionResult> GetProducts()
-        {
-            try
-            {
-                var products = await _productRepository.GetAllProductsAsync();
-                var productDTOs = _mapper.Map<IEnumerable<ProductManagementDTO>>(products); // Map to DTOs
-                return Ok(productDTOs);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
-
-        [HttpGet("Get All Orders")]
-        public async Task<IActionResult> GetOrders()
-        {
-            try
-            {
-                var orders = await _orderRepository.GetAllOrdersAsync();
-                var orderDTOs = _mapper.Map<IEnumerable<OrderManagementDTO>>(orders); // Map to DTOs
-                return Ok(orderDTOs);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
-
-        [HttpGet("Get All Admins")]
-        public async Task<IActionResult> GetAdmins()
-        {
-            try
-            {
-                var admins = await _adminRepository.GetAllAdminsAsync();
-                var adminDTOs = _mapper.Map<IEnumerable<AdminDto>>(admins); // Map to DTOs
-                return Ok(adminDTOs);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
-
-        [HttpGet("Get Orders Of User")]
-        public async Task<IActionResult> GetOrdersByUserId(int userId)
-        {
-            try
-            {
-                var orders = await _orderRepository.GetAllOrdersAsync();
-                var userOrders = orders.Where(o => o.UserID == userId).ToList();
-
-                if (userOrders == null || !userOrders.Any())
-                {
-                    return NotFound($"No orders found for User ID {userId}.");
-                }
-
-                // Map list of OrderManagement to list of OrderManagementDTO
-                var orderDTOs = _mapper.Map<IEnumerable<OrderManagementDTO>>(userOrders);
-
-                return Ok(orderDTOs);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
-
-        [HttpGet("Analytics")]
-        public async Task<IActionResult> DataAnalytics()
-        {
-            try
-            {
-                var adminCount = (await _adminRepository.GetAllAdminsAsync()).Count();
-                var productCount = (await _productRepository.GetAllProductsAsync()).Count();
-                var orderCount = (await _orderRepository.GetAllOrdersAsync()).Count();
-                var userCount = (await _userRepository.GetAllUsersAsync()).Count();
-
-                var analyticsDTO = new AnalyticsDTO
-                {
-                    Users = userCount,
-                    Products = productCount,
-                    Orders = orderCount,
-                    Admins = adminCount,
-                };
-
-                return Ok(analyticsDTO);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
-    }
-}
-AuthController.cs
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using Walmart.Models.DTO;
-using Walmart.Repositories.Interface;
-using Walmart.Helpers;
-using Walmart.Models.Domain;
-using Microsoft.Extensions.Logging;
-
-namespace Walmart.Controllers
-{
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthController : ControllerBase
-    {
-        private readonly IUserRepository _userRepository;
-        private readonly IAdminRepository _adminRepository;
-        private readonly JwtHelper _jwtHelper;
-        private readonly IMapper _mapper;
-        private readonly ILogger<AuthController> _logger;
-
-        public AuthController(
-            IUserRepository userRepository,
-            IAdminRepository adminRepository,
-            JwtHelper jwtHelper,
-            IMapper mapper,
-            ILogger<AuthController> logger)
-        {
-            _userRepository = userRepository;
-            _adminRepository = adminRepository;
-            _jwtHelper = jwtHelper;
-            _mapper = mapper;
-            _logger = logger;
-        }
-
-        [HttpPost("User Registration")]
-        public async Task<IActionResult> RegisterUser([FromBody] RegisterDTO registerDTO)
-        {
-            try
-            {
-                if (await _userRepository.GetUserByEmailAsync(registerDTO.Email) != null)
-                    return BadRequest("User already exists");
-
-                var user = _mapper.Map<User>(registerDTO);
-                user.Role = "User";
-
-                await _userRepository.AddUserAsync(user);
-                return Ok("User registered successfully");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred during User Registration");
-                return StatusCode(500, "Internal server error");
-            }
-        }
-
-        [HttpPost("Admin Registration")]
-        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterDTO registerDTO)
-        {
-            try
-            {
-                if (await _adminRepository.GetAdminByEmailAsync(registerDTO.Email) != null)
-                    return BadRequest("Admin already exists");
-
-                var admin = _mapper.Map<Admin>(registerDTO);
-                admin.Role = "Admin";
-
-                await _adminRepository.AddAdminAsync(admin);
-                return Ok("Admin registered successfully");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"An error occurred during Admin Registration: {ex.Message}");
-                return StatusCode(500, "Internal server error");
-            }
-
-        }
-
-        [HttpPost("User Login")]
-        public async Task<IActionResult> UserLogin([FromBody] LoginDTO loginDTO)
-        {
-            try
-            {
-                var user = await _userRepository.GetUserByEmailAsync(loginDTO.Email);
-                if (user == null || user.Password != loginDTO.Password)
-                    return Unauthorized("Invalid credentials");
-
-                var token = _jwtHelper.GenerateToken(user.UserID, user.Email, user.Role);
-                return Ok(new { Token = token });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred during User Login");
-                return StatusCode(500, "Internal server error");
-            }
-        }
-
-        [HttpPost("Admin Login")]
-        public async Task<IActionResult> AdminLogin([FromBody] LoginDTO loginDTO)
-        {
-            try
-            {
-                var admin = await _adminRepository.GetAdminByEmailAsync(loginDTO.Email);
-                if (admin == null || admin.Password != loginDTO.Password)
-                    return Unauthorized("Invalid credentials");
-
-                var token = _jwtHelper.GenerateToken(admin.AdminID, admin.Email, admin.Role);
-                return Ok(new { Token = token });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred during Admin Login");
-                return StatusCode(500, "Internal server error");
-            }
-        }
-    }
-}
+export default Dashboard;
