@@ -1,82 +1,28 @@
-Login.jsx
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Login from './components/Login';
+import Dashboard from './components/Dashboard';
+import './App.css';
 
-const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate();
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    const response = await fetch('https://localhost:5001/api/auth/userlogin', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-    if (response.ok) {
-      const data = await response.json();
-      localStorage.setItem('jwtToken', data.token); // Save token in localStorage
-      navigate('/dashboard'); // Redirect to dashboard after login
-    } else {
-      alert('Login failed!');
-    }
-  };
+const App = () => {
+  const token = localStorage.getItem('jwtToken'); // Get token from localStorage
 
   return (
-    <form onSubmit={handleLogin}>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <button type="submit">Login</button>
-    </form>
+    <Router>
+      <div className="App">
+        <Routes>
+          {/* Public Route: Login Page */}
+          <Route path="/" element={<Login />} />
+
+          {/* Protected Route: Dashboard Page */}
+          <Route
+            path="/dashboard"
+            element={token ? <Dashboard /> : <Login />} // Check if token exists
+          />
+        </Routes>
+      </div>
+    </Router>
   );
 };
 
-export default Login;
-
-Dashboard.jsx
-import React, { useEffect, useState } from 'react';
-
-const Dashboard = () => {
-  const [data, setData] = useState([]);
-  const token = localStorage.getItem('jwtToken');
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch('https://localhost:5001/api/admin/GetAllUsers', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-      const result = await response.json();
-      setData(result);
-    };
-
-    fetchData();
-  }, [token]);
-
-  return (
-    <div>
-      <h1>Dashboard</h1>
-      <ul>
-        {data.map((item) => (
-          <li key={item.id}>{item.name}</li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-export default Dashboard;
+export default App;
