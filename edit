@@ -1,122 +1,62 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const OrdersPage = () => {
-  const [orders, setOrders] = useState([]);
+const ProductPage = () => {
+  const [products, setProducts] = useState([]);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    const fetchOrders = async () => {
+    const fetchProducts = async () => {
       try {
-        const response = await axios.get("https://localhost:7162/api/Admin/Get All Orders", {
+        const response = await axios.get("https://localhost:7162/api/Admin/Get All Products", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        setOrders(response.data);
+        setProducts(response.data);
       } catch (error) {
-        console.error("Failed to fetch orders:", error);
+        console.error("Failed to fetch products:", error);
       }
     };
 
-    fetchOrders();
+    fetchProducts();
   }, [token]);
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">Orders</h2>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white shadow-md rounded-lg">
-          <thead>
-            <tr className="bg-gray-200 text-left">
-              <th className="py-2 px-4">User ID</th>
-              <th className="py-2 px-4">Product ID</th>
-              <th className="py-2 px-4">Quantity</th>
-              <th className="py-2 px-4">Total Price</th>
-              <th className="py-2 px-4">Shipping Address</th>
-              <th className="py-2 px-4">Order Status</th>
-              <th className="py-2 px-4">Payment Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order, index) => (
-              <tr key={index} className="border-t">
-                <td className="py-2 px-4">{order.userID}</td>
-                <td className="py-2 px-4">{order.productID}</td>
-                <td className="py-2 px-4">{order.quantity}</td>
-                <td className="py-2 px-4">₹{order.totalPrice.toFixed(2)}</td>
-                <td className="py-2 px-4">{order.shippingAddress}</td>
-                <td className="py-2 px-4">{order.orderStatus}</td>
-                <td className="py-2 px-4">{order.paymentStatus}</td>
-              </tr>
-            ))}
-            {orders.length === 0 && (
-              <tr>
-                <td colSpan="7" className="text-center py-4 text-gray-500">
-                  No orders available.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-};
-
-export default OrdersPage;
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-
-const UsersPage = () => {
-  const [users, setUsers] = useState([]);
-  const token = localStorage.getItem("token");
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get("https://localhost:7162/api/Admin/Get All Users", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setUsers(response.data);
-      } catch (error) {
-        console.error("Failed to fetch users:", error);
-      }
-    };
-
-    fetchUsers();
-  }, [token]);
-
-  return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">Users</h2>
+      <h2 className="text-2xl font-bold mb-4 text-gray-800">Products</h2>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white shadow-md rounded-lg">
           <thead>
             <tr className="bg-gray-200 text-left">
               <th className="py-2 px-4">Name</th>
-              <th className="py-2 px-4">Email</th>
-              <th className="py-2 px-4">Password</th>
-              <th className="py-2 px-4">Shipping Address</th>
-              <th className="py-2 px-4">Payment Details</th>
+              <th className="py-2 px-4">Description</th>
+              <th className="py-2 px-4">Price</th>
+              <th className="py-2 px-4">Category</th>
+              <th className="py-2 px-4">Image</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((user, index) => (
+            {products.map((product, index) => (
               <tr key={index} className="border-t">
-                <td className="py-2 px-4">{user.name}</td>
-                <td className="py-2 px-4">{user.email}</td>
-                <td className="py-2 px-4">{user.password}</td>
-                <td className="py-2 px-4">{user.shippingAddress}</td>
-                <td className="py-2 px-4">{user.paymentDetails}</td>
+                <td className="py-2 px-4">{product.name}</td>
+                <td className="py-2 px-4">{product.description}</td>
+                <td className="py-2 px-4">₹{product.price}</td>
+                <td className="py-2 px-4">{product.category}</td>
+                <td className="py-2 px-4">
+                  <img
+                    src={product.imageURL}
+                    alt={product.name}
+                    className="w-16 h-16 object-cover rounded"
+                    onError={(e) => (e.target.style.display = "none")}
+                  />
+                </td>
               </tr>
             ))}
-            {users.length === 0 && (
+            {products.length === 0 && (
               <tr>
                 <td colSpan="5" className="text-center py-4 text-gray-500">
-                  No users found.
+                  No products found.
                 </td>
               </tr>
             )}
@@ -127,4 +67,4 @@ const UsersPage = () => {
   );
 };
 
-export default UsersPage;
+export default ProductPage;
