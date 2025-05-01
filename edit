@@ -1,60 +1,60 @@
-Protected
-// src/components/ProtectedRoute.jsx
-import React from 'react';
-import { Navigate } from 'react-router-dom';
-
-const ProtectedRoute = ({ children }) => {
-  const token = localStorage.getItem('token');
-
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return children;
-};
-
-export default ProtectedRoute;
-dahsboard.jsx
-import React from 'react';
+// src/pages/Dashboard.jsx
+import React, { useEffect, useState } from "react";
 
 const Dashboard = () => {
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    window.location.href = '/login';
-  };
+  const [analytics, setAnalytics] = useState(null);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchAnalytics = async () => {
+      try {
+        const res = await fetch("https://localhost:PORT/api/Admin/Analytics", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error("Unauthorized or failed to fetch data");
+        }
+
+        const data = await res.json();
+        setAnalytics(data);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    fetchAnalytics();
+  }, []);
+
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
+  if (!analytics) return <p>Loading...</p>;
 
   return (
     <div>
-      <h2>Welcome to Admin Dashboard</h2>
-      <button onClick={handleLogout}>Logout</button>
+      <h2>Admin Dashboard</h2>
+      <ul>
+        <li>🧑‍🤝‍🧑 Users: {analytics.users}</li>
+        <li>📦 Products: {analytics.products}</li>
+        <li>🧾 Orders: {analytics.orders}</li>
+        <li>🧑‍💼 Admins: {analytics.admins}</li>
+      </ul>
     </div>
   );
 };
 
 export default Dashboard;
 App.js
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './components/Login';
-import Dashboard from './components/Dashboard';
-import ProtectedRoute from './components/ProtectedRoute';
+import Dashboard from "./pages/Dashboard";
+import ProtectedRoute from "./components/ProtectedRoute"; // if you're using it
 
-function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route 
-          path="/dashboard" 
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          } 
-        />
-      </Routes>
-    </Router>
-  );
-}
-
-export default App;
+<Route
+  path="/dashboard"
+  element={
+    <ProtectedRoute>
+      <Dashboard />
+    </ProtectedRoute>
+  }
+/>
