@@ -1,63 +1,91 @@
-.edit-product-container {
-  max-width: 500px;
-  margin: 50px auto;
-  padding: 30px;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-}
+import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import "../../styles/productManagement.css";
 
-.edit-product-container h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
-}
+const EditProduct = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [editProduct, setEditProduct] = useState(location.state?.product || null);
 
-.edit-product-container input {
-  width: 100%;
-  padding: 12px 14px;
-  margin: 10px 0;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  transition: border 0.3s ease;
-}
+  const handleUpdate = async (e) => {
+    e.preventDefault(); // Prevent page refresh
+    try {
+      const token = localStorage.getItem("jwtToken");
 
-.edit-product-container input:focus {
-  border-color: #007bff;
-  outline: none;
-}
+      const response = await fetch(
+        `https://localhost:7162/api/ProductManagement/Edit_Product/${editProduct.productId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(editProduct),
+        }
+      );
 
-.button-group {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
+      if (response.ok) {
+        navigate("/products"); // Redirect after update
+      } else {
+        console.error("Error updating product");
+      }
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
+  };
 
-.button-group button {
-  width: 48%;
-  padding: 12px;
-  font-size: 16px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
+  if (!editProduct) {
+    return <p>Loading product details...</p>;
+  }
 
-.button-group button:first-child {
-  background-color: #28a745;
-  color: white;
-}
+  return (
+    <div className="edit-product-container">
+      <h1>Edit Product</h1>
+      <form onSubmit={handleUpdate}>
+        <input
+          type="text"
+          placeholder="Name"
+          value={editProduct.name || ""}
+          onChange={(e) =>
+            setEditProduct({ ...editProduct, name: e.target.value })
+          }
+          required
+        />
+        <input
+          type="number"
+          placeholder="Price"
+          value={editProduct.price || ""}
+          onChange={(e) =>
+            setEditProduct({ ...editProduct, price: e.target.value })
+          }
+          required
+        />
+        <input
+          type="text"
+          placeholder="Category"
+          value={editProduct.category || ""}
+          onChange={(e) =>
+            setEditProduct({ ...editProduct, category: e.target.value })
+          }
+          required
+        />
+        <input
+          type="text"
+          placeholder="Image URL"
+          value={editProduct.imageURL || ""}
+          onChange={(e) =>
+            setEditProduct({ ...editProduct, imageURL: e.target.value })
+          }
+        />
+        <div className="button-group">
+          <button type="submit">Update</button>
+          <button type="button" onClick={() => navigate("/products")}>
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
 
-.button-group button:first-child:hover {
-  background-color: #218838;
-}
-
-.button-group button:last-child {
-  background-color: #dc3545;
-  color: white;
-}
-
-.button-group button:last-child:hover {
-  background-color: #c82333;
-}
+export default EditProduct;
