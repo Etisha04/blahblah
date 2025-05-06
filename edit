@@ -1,86 +1,29 @@
+    public class OrderResponseDTO
+    {
+        public int OrderID { get; set; } // Order ID
+        public int ProductID { get; set; } // Product ID
+        public int Quantity { get; set; } // Quantity ordered
+        public decimal TotalPrice { get; set; } // Total price
+        public string ShippingAddress { get; set; } // Address for delivery
+        public string OrderStatus { get; set; } // Status: "Placed", "Delivered", etc.
+        public string PaymentStatus { get; set; } // Payment mode
+        public string ProductImageUrl { get; set; } // **Automatically fetched from product**
+
+        public ProductManagement ProductManagement { get; set; } = new ProductManagement();
+    }
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Walmart.Models.Domain
 {
-    public class OrderManagement
+    public class ProductManagement
     {
         [Key]
-        public int OrderID { get; set; }
-        [ForeignKey("User")]
-        public int UserID { get; set; }
-        [ForeignKey("ProductManagement")]
-        public int ProductID { get; set; }
-        public int Quantity { get; set; }
-        public decimal TotalPrice { get; set; }
-        public string ShippingAddress { get; set; } = string.Empty;
-        public string OrderStatus { get; set; } = string.Empty;
-        public string PaymentStatus { get; set; } = string.Empty;
-        public string ImageURL { get; set; } // ✅ Store product image URL
-        public ProductManagement ProductManagement { get; set; } = new ProductManagement();
-        public User User { get; set; } = new User();
-        public List<OrderItem> OrderItems { get; set; }
+        public int ProductId { get; set; } 
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+        public string Category { get; set; } = string.Empty;
+        public string ImageURL { get; set; } = string.Empty;
     }
-}
-
-
-[Authorize(Roles = "User")]
-[HttpPost("Order_Now")]
-public async Task<IActionResult> Post([FromBody] OrderRequestDTO orderRequest)
-{
-    try
-    {
-        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (string.IsNullOrEmpty(userIdClaim))
-        {
-            return Unauthorized("Session expired. Please log in again.");
-        }
-
-        var product = await _orderManagementRepository.GetProductByIdAsync(orderRequest.ProductID);
-        if (product == null)
-        {
-            return NotFound($"Product with ID {orderRequest.ProductID} not found.");
-        }
-
-        var order = new OrderManagement
-        {
-            UserID = int.Parse(userIdClaim),
-            ProductID = orderRequest.ProductID,
-            Quantity = orderRequest.Quantity,
-            ShippingAddress = orderRequest.ShippingAddress,
-            PaymentStatus = orderRequest.PaymentMode,
-            OrderStatus = "Placed",
-            TotalPrice = orderRequest.Quantity * product.Price,
-            ProductManagement = product
-        };
-
-        await _orderManagementRepository.AddOrderAsync(order);
-
-        var orderResponse = _mapper.Map<OrderResponseDTO>(order);
-        orderResponse.ProductImageUrl = product.ImageURL; // Auto-add image
-
-        return CreatedAtAction(nameof(GetOrder), new { id = order.OrderID }, orderResponse);
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "An error occurred while placing an order.");
-        return StatusCode(500, "Internal server error");
-    }
-}
-        CreateMap<OrderManagement, OrderRequestDTO>().ReverseMap(); // Request DTO
-        CreateMap<OrderManagement, OrderResponseDTO>().ReverseMap() // Response DTO with image
-            .ForMember(dest => dest.ImageURL, opt => opt.MapFrom(src => src.ProductManagement.ImageURL))
-            .ReverseMap();
-OrderManagementRepository.cs
-public async Task AddOrderAsync(OrderManagement order)
-{
-    await _dbContext.OrderManagements.AddAsync(order);
-    await _dbContext.SaveChangesAsync();
-}
-public async Task<OrderManagement> GetOrderByIdAsync(int id)
-{
-    return await _dbContext.OrderManagements
-        .Include(o => o.User)
-        .Include(o => o.ProductManagement)
-        .FirstOrDefaultAsync(o => o.OrderID == id);
 }
