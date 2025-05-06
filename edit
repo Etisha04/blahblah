@@ -1,182 +1,86 @@
-import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import "../../styles/productManagement.css";
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-const EditProduct = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [editProduct, setEditProduct] = useState(location.state?.product || null);
-
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-
-    try {
-      const token = localStorage.getItem("jwtToken");
-
-      const response = await fetch(
-        `https://localhost:7162/api/ProductManagement/Edit_Product/${editProduct.productId}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(editProduct),
-        }
-      );
-
-      if (response.ok) {
-        navigate("/products");
-      } else {
-        console.error("Error updating product");
-      }
-    } catch (error) {
-      console.error("Error updating product:", error);
+namespace Walmart.Models.Domain
+{
+    public class OrderManagement
+    {
+        [Key]
+        public int OrderID { get; set; }
+        [ForeignKey("User")]
+        public int UserID { get; set; }
+        [ForeignKey("ProductManagement")]
+        public int ProductID { get; set; }
+        public int Quantity { get; set; }
+        public decimal TotalPrice { get; set; }
+        public string ShippingAddress { get; set; } = string.Empty;
+        public string OrderStatus { get; set; } = string.Empty;
+        public string PaymentStatus { get; set; } = string.Empty;
+        public string ImageURL { get; set; } // ✅ Store product image URL
+        public ProductManagement ProductManagement { get; set; } = new ProductManagement();
+        public User User { get; set; } = new User();
+        public List<OrderItem> OrderItems { get; set; }
     }
-  };
-
-  if (!editProduct) {
-    return <p>Loading product details...</p>;
-  }
-
-  return (
-    <div className="edit-product-container">
-      <h1>Edit Product</h1>
-      <form onSubmit={handleUpdate} className="edit-product-form">
-        <div className="form-group">
-          <label htmlFor="name">Product Name</label>
-          <input
-            id="name"
-            type="text"
-            value={editProduct.name || ""}
-            onChange={(e) =>
-              setEditProduct({ ...editProduct, name: e.target.value })
-            }
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="price">Price (₹)</label>
-          <input
-            id="price"
-            type="number"
-            value={editProduct.price || ""}
-            onChange={(e) =>
-              setEditProduct({ ...editProduct, price: e.target.value })
-            }
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="category">Category</label>
-          <input
-            id="category"
-            type="text"
-            value={editProduct.category || ""}
-            onChange={(e) =>
-              setEditProduct({ ...editProduct, category: e.target.value })
-            }
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="imageURL">Image URL</label>
-          <input
-            id="imageURL"
-            type="text"
-            value={editProduct.imageURL || ""}
-            onChange={(e) =>
-              setEditProduct({ ...editProduct, imageURL: e.target.value })
-            }
-          />
-        </div>
-
-        <div className="button-group">
-          <button type="submit">Update</button>
-          <button type="button" onClick={() => navigate("/products")}>
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
-  );
-};
-
-export default EditProduct;
-.edit-product-container {
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 30px;
-  background-color: #fdfdfd;
-  border-radius: 12px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
-.edit-product-container h1 {
-  text-align: center;
-  margin-bottom: 24px;
-  color: #333;
-}
 
-.edit-product-form .form-group {
-  margin-bottom: 20px;
-}
+[Authorize(Roles = "User")]
+[HttpPost("Order_Now")]
+public async Task<IActionResult> Post([FromBody] OrderRequestDTO orderRequest)
+{
+    try
+    {
+        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userIdClaim))
+        {
+            return Unauthorized("Session expired. Please log in again.");
+        }
 
-.edit-product-form label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 600;
-  color: #444;
-}
+        var product = await _orderManagementRepository.GetProductByIdAsync(orderRequest.ProductID);
+        if (product == null)
+        {
+            return NotFound($"Product with ID {orderRequest.ProductID} not found.");
+        }
 
-.edit-product-form input {
-  width: 100%;
-  padding: 10px 14px;
-  font-size: 15px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  transition: border 0.3s ease;
-}
+        var order = new OrderManagement
+        {
+            UserID = int.Parse(userIdClaim),
+            ProductID = orderRequest.ProductID,
+            Quantity = orderRequest.Quantity,
+            ShippingAddress = orderRequest.ShippingAddress,
+            PaymentStatus = orderRequest.PaymentMode,
+            OrderStatus = "Placed",
+            TotalPrice = orderRequest.Quantity * product.Price,
+            ProductManagement = product
+        };
 
-.edit-product-form input:focus {
-  border-color: #007bff;
-  outline: none;
-}
+        await _orderManagementRepository.AddOrderAsync(order);
 
-.button-group {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 25px;
-}
+        var orderResponse = _mapper.Map<OrderResponseDTO>(order);
+        orderResponse.ProductImageUrl = product.ImageURL; // Auto-add image
 
-.button-group button {
-  width: 48%;
-  padding: 12px;
-  font-size: 16px;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+        return CreatedAtAction(nameof(GetOrder), new { id = order.OrderID }, orderResponse);
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "An error occurred while placing an order.");
+        return StatusCode(500, "Internal server error");
+    }
 }
-
-.button-group button[type="submit"] {
-  background-color: #28a745;
-  color: white;
+        CreateMap<OrderManagement, OrderRequestDTO>().ReverseMap(); // Request DTO
+        CreateMap<OrderManagement, OrderResponseDTO>().ReverseMap() // Response DTO with image
+            .ForMember(dest => dest.ImageURL, opt => opt.MapFrom(src => src.ProductManagement.ImageURL))
+            .ReverseMap();
+OrderManagementRepository.cs
+public async Task AddOrderAsync(OrderManagement order)
+{
+    await _dbContext.OrderManagements.AddAsync(order);
+    await _dbContext.SaveChangesAsync();
 }
-
-.button-group button[type="submit"]:hover {
-  background-color: #218838;
-}
-
-.button-group button[type="button"] {
-  background-color: #dc3545;
-  color: white;
-}
-
-.button-group button[type="button"]:hover {
-  background-color: #c82333;
+public async Task<OrderManagement> GetOrderByIdAsync(int id)
+{
+    return await _dbContext.OrderManagements
+        .Include(o => o.User)
+        .Include(o => o.ProductManagement)
+        .FirstOrDefaultAsync(o => o.OrderID == id);
 }
