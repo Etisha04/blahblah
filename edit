@@ -40,130 +40,24 @@ namespace Walmart.Helpers
 }
 error I am getting
 Download the React DevTools for a better development experience: https://react.dev/link/react-devtools
+2LoginForm.jsx:18 🚀 User already logged in, redirecting...
+Dashboard.jsx:31 API Response: Array(1)
+Dashboard.jsx:31 API Response: Array(1)
 OrderConfirmation.jsx:17 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJzYW1AbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNzQ2ODA5NDM5LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MTUyIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzE1MiJ9.P3tGyR23xDGepjk_GLEbU135ofZCton39Tf-jSh5bnM
-OrderConfirmation.jsx:26 {http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: '1', http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: 'sam@mail.com', http://schemas.microsoft.com/ws/2008/06/identity/claims/role: 'User', exp: 1746809439, iss: 'https://localhost:7152', …}
+OrderConfirmation.jsx:26 Object
 OrderConfirmation.jsx:17 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJzYW1AbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNzQ2ODA5NDM5LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MTUyIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzE1MiJ9.P3tGyR23xDGepjk_GLEbU135ofZCton39Tf-jSh5bnM
-OrderConfirmation.jsx:26 {http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: '1', http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: 'sam@mail.com', http://schemas.microsoft.com/ws/2008/06/identity/claims/role: 'User', exp: 1746809439, iss: 'https://localhost:7152', …}
-OrderConfirmation.jsx:53 {userID: '1', productID: 1, quantity: 1, totalPrice: 999, shippingAddress: 'Chennai', …}
-OrderConfirmation.jsx:54 
+OrderConfirmation.jsx:26 Object
+OrderConfirmation.jsx:61 Object
+:7162/api/OrderManagement/OrderNow:1 
             
             
-            POST https://localhost:7162/api/OrderManagement/OrderNow 401 (Unauthorized)
-dispatchXhrRequest @ xhr.js:195
-xhr @ xhr.js:15
-dispatchRequest @ dispatchRequest.js:51
-_request @ Axios.js:187
-request @ Axios.js:40
-httpMethod @ Axios.js:226
-wrap @ bind.js:5
-handleConfirmOrder @ OrderConfirmation.jsx:54
-executeDispatch @ react-dom-client.development.js:16368
-runWithFiberInDEV @ react-dom-client.development.js:1518
-processDispatchQueue @ react-dom-client.development.js:16417
-(anonymous) @ react-dom-client.development.js:17016
-batchedUpdates$1 @ react-dom-client.development.js:3262
-dispatchEventForPluginEventSystem @ react-dom-client.development.js:16572
-dispatchEvent @ react-dom-client.development.js:20657
-dispatchDiscreteEvent @ react-dom-client.development.js:20625
-<button>
-(anonymous) @ react-jsx-dev-runtime.development.js:336
-OrderConfirmation @ OrderConfirmation.jsx:97
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<OrderConfirmation>
-(anonymous) @ react-jsx-dev-runtime.development.js:336
-App @ App.js:35
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-(anonymous) @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:9
-(anonymous) @ react refresh:37
-__webpack_require__ @ bootstrap:22
-(anonymous) @ startup:7
-(anonymous) @ startup:7
+            Failed to load resource: the server responded with a status of 401 ()
+OrderConfirmation.jsx:76  Uncaught (in promise) AxiosError
 [NEW] Explain Console errors by using Copilot in Edge: click
          
          to explain an error. 
         Learn more
         Don't show again
-settle.js:19  Uncaught (in promise) AxiosError {message: 'Request failed with status code 401', name: 'AxiosError', code: 'ERR_BAD_REQUEST', config: {…}, request: XMLHttpRequest, …}
-settle @ settle.js:19
-onloadend @ xhr.js:59
-XMLHttpRequest.send
-dispatchXhrRequest @ xhr.js:195
-xhr @ xhr.js:15
-dispatchRequest @ dispatchRequest.js:51
-_request @ Axios.js:187
-request @ Axios.js:40
-httpMethod @ Axios.js:226
-wrap @ bind.js:5
-handleConfirmOrder @ OrderConfirmation.jsx:54
-executeDispatch @ react-dom-client.development.js:16368
-runWithFiberInDEV @ react-dom-client.development.js:1518
-processDispatchQueue @ react-dom-client.development.js:16417
-(anonymous) @ react-dom-client.development.js:17016
-batchedUpdates$1 @ react-dom-client.development.js:3262
-dispatchEventForPluginEventSystem @ react-dom-client.development.js:16572
-dispatchEvent @ react-dom-client.development.js:20657
-dispatchDiscreteEvent @ react-dom-client.development.js:20625
-<button>
-(anonymous) @ react-jsx-dev-runtime.development.js:336
-OrderConfirmation @ OrderConfirmation.jsx:97
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<OrderConfirmation>
-(anonymous) @ react-jsx-dev-runtime.development.js:336
-App @ App.js:35
-react-stack-bottom-frame @ react-dom-client.development.js:23863
-renderWithHooksAgain @ react-dom-client.development.js:5629
-renderWithHooks @ react-dom-client.development.js:5541
-updateFunctionComponent @ react-dom-client.development.js:8897
-beginWork @ react-dom-client.development.js:10522
-runWithFiberInDEV @ react-dom-client.development.js:1518
-performUnitOfWork @ react-dom-client.development.js:15130
-workLoopSync @ react-dom-client.development.js:14956
-renderRootSync @ react-dom-client.development.js:14936
-performWorkOnRoot @ react-dom-client.development.js:14417
-performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
-performWorkUntilDeadline @ scheduler.development.js:45
-<App>
-(anonymous) @ react-jsx-dev-runtime.development.js:336
-./src/index.js @ index.js:9
-(anonymous) @ react refresh:37
-__webpack_require__ @ bootstrap:22
-(anonymous) @ startup:7
-(anonymous) @ startup:7
 Controller
 [HttpPost("OrderNow")]
 public async Task<IActionResult> Post([FromBody] ordernowdto orderRequest)
