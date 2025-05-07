@@ -1,3 +1,221 @@
+Download the React DevTools for a better development experience: https://react.dev/link/react-devtools
+OrderConfirmation.jsx:74 📦 Order Request: {userID: '1', productID: 1, quantity: 1, totalPrice: 999, shippingAddress: 'yy', …}
+Order.jsx:9 
+            
+            
+            GET https://localhost:7162/api/OrderManagement/Your_Orders/1 404 (Not Found)
+(anonymous) @ Order.jsx:9
+react-stack-bottom-frame @ react-dom-client.development.js:23949
+runWithFiberInDEV @ react-dom-client.development.js:1518
+commitHookEffectListMount @ react-dom-client.development.js:11886
+commitHookPassiveMountEffects @ react-dom-client.development.js:12024
+commitPassiveMountOnFiber @ react-dom-client.development.js:13840
+recursivelyTraversePassiveMountEffects @ react-dom-client.development.js:13813
+commitPassiveMountOnFiber @ react-dom-client.development.js:13957
+recursivelyTraversePassiveMountEffects @ react-dom-client.development.js:13813
+commitPassiveMountOnFiber @ react-dom-client.development.js:13834
+recursivelyTraversePassiveMountEffects @ react-dom-client.development.js:13813
+commitPassiveMountOnFiber @ react-dom-client.development.js:13834
+recursivelyTraversePassiveMountEffects @ react-dom-client.development.js:13813
+commitPassiveMountOnFiber @ react-dom-client.development.js:13957
+recursivelyTraversePassiveMountEffects @ react-dom-client.development.js:13813
+commitPassiveMountOnFiber @ react-dom-client.development.js:13957
+recursivelyTraversePassiveMountEffects @ react-dom-client.development.js:13813
+commitPassiveMountOnFiber @ react-dom-client.development.js:13834
+recursivelyTraversePassiveMountEffects @ react-dom-client.development.js:13813
+commitPassiveMountOnFiber @ react-dom-client.development.js:13834
+recursivelyTraversePassiveMountEffects @ react-dom-client.development.js:13813
+commitPassiveMountOnFiber @ react-dom-client.development.js:13834
+recursivelyTraversePassiveMountEffects @ react-dom-client.development.js:13813
+commitPassiveMountOnFiber @ react-dom-client.development.js:13957
+recursivelyTraversePassiveMountEffects @ react-dom-client.development.js:13813
+commitPassiveMountOnFiber @ react-dom-client.development.js:13853
+flushPassiveEffects @ react-dom-client.development.js:15737
+flushPendingEffects @ react-dom-client.development.js:15702
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16204
+performWorkUntilDeadline @ scheduler.development.js:45
+<Orders>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
+App @ App.js:36
+react-stack-bottom-frame @ react-dom-client.development.js:23863
+renderWithHooksAgain @ react-dom-client.development.js:5629
+renderWithHooks @ react-dom-client.development.js:5541
+updateFunctionComponent @ react-dom-client.development.js:8897
+beginWork @ react-dom-client.development.js:10522
+runWithFiberInDEV @ react-dom-client.development.js:1518
+performUnitOfWork @ react-dom-client.development.js:15130
+workLoopSync @ react-dom-client.development.js:14956
+renderRootSync @ react-dom-client.development.js:14936
+performWorkOnRoot @ react-dom-client.development.js:14417
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
+performWorkUntilDeadline @ scheduler.development.js:45
+<App>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
+./src/index.js @ index.js:9
+options.factory @ react refresh:37
+__webpack_require__ @ bootstrap:22
+(anonymous) @ startup:7
+(anonymous) @ startup:7
+Order.jsx:12  Error fetching orders: SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input
+    at Order.jsx:12:1
+(anonymous) @ Order.jsx:12
+Promise.catch
+(anonymous) @ Order.jsx:12
+react-stack-bottom-frame @ react-dom-client.development.js:23949
+runWithFiberInDEV @ react-dom-client.development.js:1518
+commitHookEffectListMount @ react-dom-client.development.js:11886
+commitHookPassiveMountEffects @ react-dom-client.development.js:12024
+commitPassiveMountOnFiber @ react-dom-client.development.js:13840
+recursivelyTraversePassiveMountEffects @ react-dom-client.development.js:13813
+commitPassiveMountOnFiber @ react-dom-client.development.js:13957
+recursivelyTraversePassiveMountEffects @ react-dom-client.development.js:13813
+commitPassiveMountOnFiber @ react-dom-client.development.js:13834
+recursivelyTraversePassiveMountEffects @ react-dom-client.development.js:13813
+commitPassiveMountOnFiber @ react-dom-client.development.js:13834
+recursivelyTraversePassiveMountEffects @ react-dom-client.development.js:13813
+commitPassiveMountOnFiber @ react-dom-client.development.js:13957
+recursivelyTraversePassiveMountEffects @ react-dom-client.development.js:13813
+commitPassiveMountOnFiber @ react-dom-client.development.js:13957
+recursivelyTraversePassiveMountEffects @ react-dom-client.development.js:13813
+commitPassiveMountOnFiber @ react-dom-client.development.js:13834
+recursivelyTraversePassiveMountEffects @ react-dom-client.development.js:13813
+commitPassiveMountOnFiber @ react-dom-client.development.js:13834
+recursivelyTraversePassiveMountEffects @ react-dom-client.development.js:13813
+commitPassiveMountOnFiber @ react-dom-client.development.js:13834
+recursivelyTraversePassiveMountEffects @ react-dom-client.development.js:13813
+commitPassiveMountOnFiber @ react-dom-client.development.js:13957
+recursivelyTraversePassiveMountEffects @ react-dom-client.development.js:13813
+commitPassiveMountOnFiber @ react-dom-client.development.js:13853
+flushPassiveEffects @ react-dom-client.development.js:15737
+flushPendingEffects @ react-dom-client.development.js:15702
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16204
+performWorkUntilDeadline @ scheduler.development.js:45
+<Orders>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
+App @ App.js:36
+react-stack-bottom-frame @ react-dom-client.development.js:23863
+renderWithHooksAgain @ react-dom-client.development.js:5629
+renderWithHooks @ react-dom-client.development.js:5541
+updateFunctionComponent @ react-dom-client.development.js:8897
+beginWork @ react-dom-client.development.js:10522
+runWithFiberInDEV @ react-dom-client.development.js:1518
+performUnitOfWork @ react-dom-client.development.js:15130
+workLoopSync @ react-dom-client.development.js:14956
+renderRootSync @ react-dom-client.development.js:14936
+performWorkOnRoot @ react-dom-client.development.js:14417
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
+performWorkUntilDeadline @ scheduler.development.js:45
+<App>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
+./src/index.js @ index.js:9
+options.factory @ react refresh:37
+__webpack_require__ @ bootstrap:22
+(anonymous) @ startup:7
+(anonymous) @ startup:7
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+Order.jsx:9 
+            
+            
+            GET https://localhost:7162/api/OrderManagement/Your_Orders/1 404 (Not Found)
+(anonymous) @ Order.jsx:9
+react-stack-bottom-frame @ react-dom-client.development.js:23949
+runWithFiberInDEV @ react-dom-client.development.js:1518
+commitHookEffectListMount @ react-dom-client.development.js:11886
+commitHookPassiveMountEffects @ react-dom-client.development.js:12024
+reconnectPassiveEffects @ react-dom-client.development.js:14004
+doubleInvokeEffectsOnFiber @ react-dom-client.development.js:15964
+runWithFiberInDEV @ react-dom-client.development.js:1518
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15925
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15925
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15925
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15925
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15925
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15925
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15925
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15925
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15925
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15925
+commitDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15977
+flushPassiveEffects @ react-dom-client.development.js:15747
+flushPendingEffects @ react-dom-client.development.js:15702
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16204
+performWorkUntilDeadline @ scheduler.development.js:45
+<Orders>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
+App @ App.js:36
+react-stack-bottom-frame @ react-dom-client.development.js:23863
+renderWithHooksAgain @ react-dom-client.development.js:5629
+renderWithHooks @ react-dom-client.development.js:5541
+updateFunctionComponent @ react-dom-client.development.js:8897
+beginWork @ react-dom-client.development.js:10522
+runWithFiberInDEV @ react-dom-client.development.js:1518
+performUnitOfWork @ react-dom-client.development.js:15130
+workLoopSync @ react-dom-client.development.js:14956
+renderRootSync @ react-dom-client.development.js:14936
+performWorkOnRoot @ react-dom-client.development.js:14417
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
+performWorkUntilDeadline @ scheduler.development.js:45
+<App>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
+./src/index.js @ index.js:9
+options.factory @ react refresh:37
+__webpack_require__ @ bootstrap:22
+(anonymous) @ startup:7
+(anonymous) @ startup:7
+Order.jsx:12  Error fetching orders: SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input
+    at Order.jsx:12:1
+(anonymous) @ Order.jsx:12
+Promise.catch
+(anonymous) @ Order.jsx:12
+react-stack-bottom-frame @ react-dom-client.development.js:23949
+runWithFiberInDEV @ react-dom-client.development.js:1518
+commitHookEffectListMount @ react-dom-client.development.js:11886
+commitHookPassiveMountEffects @ react-dom-client.development.js:12024
+reconnectPassiveEffects @ react-dom-client.development.js:14004
+doubleInvokeEffectsOnFiber @ react-dom-client.development.js:15964
+runWithFiberInDEV @ react-dom-client.development.js:1518
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15925
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15925
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15925
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15925
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15925
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15925
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15925
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15925
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15925
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15925
+commitDoubleInvokeEffectsInDEV @ react-dom-client.development.js:15977
+flushPassiveEffects @ react-dom-client.development.js:15747
+flushPendingEffects @ react-dom-client.development.js:15702
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16204
+performWorkUntilDeadline @ scheduler.development.js:45
+<Orders>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
+App @ App.js:36
+react-stack-bottom-frame @ react-dom-client.development.js:23863
+renderWithHooksAgain @ react-dom-client.development.js:5629
+renderWithHooks @ react-dom-client.development.js:5541
+updateFunctionComponent @ react-dom-client.development.js:8897
+beginWork @ react-dom-client.development.js:10522
+runWithFiberInDEV @ react-dom-client.development.js:1518
+performUnitOfWork @ react-dom-client.development.js:15130
+workLoopSync @ react-dom-client.development.js:14956
+renderRootSync @ react-dom-client.development.js:14936
+performWorkOnRoot @ react-dom-client.development.js:14417
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
+performWorkUntilDeadline @ scheduler.development.js:45
+<App>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:336
+./src/index.js @ index.js:9
+options.factory @ react refresh:37
+__webpack_require__ @ bootstrap:22
+(anonymous) @ startup:7
+(anonymous) @ startup:7
+
 update-order
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
