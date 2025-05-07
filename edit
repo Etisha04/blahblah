@@ -1,3 +1,145 @@
+update-order
+import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode"; // npm install jwt-decode
+import "./OrderConfirmation.css";
+
+const OrderConfirmation = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [order, setOrder] = useState(location.state?.order || {});
+  const [userDetails, setUserDetails] = useState({});
+  const [shippingAddress, setShippingAddress] = useState("");
+  const [paymentMode, setPaymentMode] = useState("Cash on Delivery");
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Session expired. Please log in again.");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const decodedToken = jwtDecode(token);
+      const userID =
+        decodedToken[
+          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+        ];
+
+      setUserDetails((prev) => ({
+        ...prev,
+        userID,
+        name: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+        email: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"],
+        shippingAddress: "Your default address here", // You can replace this if available
+      }));
+    } catch (err) {
+      console.error("Invalid token", err);
+      alert("Invalid session. Please log in again.");
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  const handleQuantityChange = (change) => {
+    setOrder((prevOrder) => ({
+      ...prevOrder,
+      quantity: Math.max(1, prevOrder.quantity + change),
+      totalPrice:
+        ((prevOrder.quantity + change) * prevOrder.totalPrice) /
+        prevOrder.quantity,
+    }));
+  };
+
+  const handleConfirmOrder = async () => {
+    const token = localStorage.getItem("token");
+
+    const orderRequest = {
+      userID: userDetails.userID,
+      productID: order.productID,
+      quantity: order.quantity,
+      totalPrice: order.totalPrice,
+      shippingAddress: shippingAddress || userDetails.shippingAddress,
+      orderStatus: "Placed",
+      paymentStatus: paymentMode,
+      productName: order.productName,
+      imageURL: order.imageURL,
+    };
+
+    console.log("📦 Order Request:", orderRequest);
+
+    try {
+      const response = await axios.post(
+        "https://localhost:7162/api/OrderManagement/OrderNow",
+        orderRequest,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 201) {
+        alert("Order placed successfully! ✅");
+        navigate("/orders");
+      }
+    } catch (error) {
+      console.error("❌ Order placement failed:", error);
+      alert("Failed to place order. Please try again.");
+    }
+  };
+
+  return (
+    <div className="order-confirmation-container">
+      <h2>Confirm Your Order</h2>
+      <div className="order-details">
+        <img src={order.imageURL || "default-product.png"} alt={order.productName} />
+        <h3>{order.productName}</h3>
+        <p>
+          Quantity:
+          <button onClick={() => handleQuantityChange(-1)}>−</button>
+          {order.quantity}
+          <button onClick={() => handleQuantityChange(1)}>+</button>
+        </p>
+        <p>Total Price: ₹{order.totalPrice}</p>
+      </div>
+
+      <div className="user-details">
+        <h3>Your Details</h3>
+        <p><strong>Name:</strong> {userDetails.name || "Loading..."}</p>
+        <p><strong>Email:</strong> {userDetails.email || "Loading..."}</p>
+        <p><strong>Shipping Address:</strong>
+          <input
+            type="text"
+            value={shippingAddress}
+            onChange={(e) => setShippingAddress(e.target.value)}
+            placeholder="Enter your shipping address"
+          />
+        </p>
+      </div>
+
+      <div className="payment-method">
+        <h3>Payment Method</h3>
+        <select value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)}>
+          <option value="UPI">UPI (GPay, PhonePe, Paytm)</option>
+          <option value="Net Banking">Net Banking</option>
+          <option value="Cash on Delivery">Cash on Delivery</option>
+        </select>
+      </div>
+
+      <button className="confirm-order-btn" onClick={handleConfirmOrder}>
+        Place Order ✅
+      </button>
+    </div>
+  );
+};
+
+export default OrderConfirmation;
+
+
+
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
