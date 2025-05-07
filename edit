@@ -1,63 +1,752 @@
-
-
-namespace Walmart.Models.Domain
+error I am getting
+Download the React DevTools for a better development experience: https://react.dev/link/react-devtools
+OrderConfirmation.jsx:17 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJzYW1AbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNzQ2ODA5NDM5LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MTUyIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzE1MiJ9.P3tGyR23xDGepjk_GLEbU135ofZCton39Tf-jSh5bnM
+OrderConfirmation.jsx:26 {http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: '1', http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: 'sam@mail.com', http://schemas.microsoft.com/ws/2008/06/identity/claims/role: 'User', exp: 1746809439, iss: 'https://localhost:7152', …}
+OrderConfirmation.jsx:17 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJzYW1AbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNzQ2ODA5NDM5LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MTUyIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzE1MiJ9.P3tGyR23xDGepjk_GLEbU135ofZCton39Tf-jSh5bnM
+OrderConfirmation.jsx:26 {http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: '1', http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: 'sam@mail.com', http://schemas.microsoft.com/ws/2008/06/identity/claims/role: 'User', exp: 1746809439, iss: 'https://localhost:7152', …}
+OrderConfirmation.jsx:53 {userID: '1', productID: 1, quantity: 1, totalPrice: 999, shippingAddress: 'Chennai', …}
+OrderConfirmation.jsx:54 
+            
+            
+            POST https://localhost:7162/api/OrderManagement/OrderNow 401 (Unauthorized)
+dispatchXhrRequest @ xhr.js:195
+xhr @ xhr.js:15
+dispatchRequest @ dispatchRequest.js:51
+_request @ Axios.js:187
+request @ Axios.js:40
+httpMethod @ Axios.js:226
+wrap @ bind.js:5
+handleConfirmOrder @ OrderConfirmation.jsx:54
+executeDispatch @ react-dom-client.development.js:16368
+runWithFiberInDEV @ react-dom-client.development.js:1518
+processDispatchQueue @ react-dom-client.development.js:16417
+(anonymous) @ react-dom-client.development.js:17016
+batchedUpdates$1 @ react-dom-client.development.js:3262
+dispatchEventForPluginEventSystem @ react-dom-client.development.js:16572
+dispatchEvent @ react-dom-client.development.js:20657
+dispatchDiscreteEvent @ react-dom-client.development.js:20625
+<button>
+(anonymous) @ react-jsx-dev-runtime.development.js:336
+OrderConfirmation @ OrderConfirmation.jsx:97
+react-stack-bottom-frame @ react-dom-client.development.js:23863
+renderWithHooksAgain @ react-dom-client.development.js:5629
+renderWithHooks @ react-dom-client.development.js:5541
+updateFunctionComponent @ react-dom-client.development.js:8897
+beginWork @ react-dom-client.development.js:10522
+runWithFiberInDEV @ react-dom-client.development.js:1518
+performUnitOfWork @ react-dom-client.development.js:15130
+workLoopSync @ react-dom-client.development.js:14956
+renderRootSync @ react-dom-client.development.js:14936
+performWorkOnRoot @ react-dom-client.development.js:14417
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
+performWorkUntilDeadline @ scheduler.development.js:45
+<OrderConfirmation>
+(anonymous) @ react-jsx-dev-runtime.development.js:336
+App @ App.js:35
+react-stack-bottom-frame @ react-dom-client.development.js:23863
+renderWithHooksAgain @ react-dom-client.development.js:5629
+renderWithHooks @ react-dom-client.development.js:5541
+updateFunctionComponent @ react-dom-client.development.js:8897
+beginWork @ react-dom-client.development.js:10522
+runWithFiberInDEV @ react-dom-client.development.js:1518
+performUnitOfWork @ react-dom-client.development.js:15130
+workLoopSync @ react-dom-client.development.js:14956
+renderRootSync @ react-dom-client.development.js:14936
+performWorkOnRoot @ react-dom-client.development.js:14417
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
+performWorkUntilDeadline @ scheduler.development.js:45
+<App>
+(anonymous) @ react-jsx-dev-runtime.development.js:336
+./src/index.js @ index.js:9
+(anonymous) @ react refresh:37
+__webpack_require__ @ bootstrap:22
+(anonymous) @ startup:7
+(anonymous) @ startup:7
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+settle.js:19  Uncaught (in promise) AxiosError {message: 'Request failed with status code 401', name: 'AxiosError', code: 'ERR_BAD_REQUEST', config: {…}, request: XMLHttpRequest, …}
+settle @ settle.js:19
+onloadend @ xhr.js:59
+XMLHttpRequest.send
+dispatchXhrRequest @ xhr.js:195
+xhr @ xhr.js:15
+dispatchRequest @ dispatchRequest.js:51
+_request @ Axios.js:187
+request @ Axios.js:40
+httpMethod @ Axios.js:226
+wrap @ bind.js:5
+handleConfirmOrder @ OrderConfirmation.jsx:54
+executeDispatch @ react-dom-client.development.js:16368
+runWithFiberInDEV @ react-dom-client.development.js:1518
+processDispatchQueue @ react-dom-client.development.js:16417
+(anonymous) @ react-dom-client.development.js:17016
+batchedUpdates$1 @ react-dom-client.development.js:3262
+dispatchEventForPluginEventSystem @ react-dom-client.development.js:16572
+dispatchEvent @ react-dom-client.development.js:20657
+dispatchDiscreteEvent @ react-dom-client.development.js:20625
+<button>
+(anonymous) @ react-jsx-dev-runtime.development.js:336
+OrderConfirmation @ OrderConfirmation.jsx:97
+react-stack-bottom-frame @ react-dom-client.development.js:23863
+renderWithHooksAgain @ react-dom-client.development.js:5629
+renderWithHooks @ react-dom-client.development.js:5541
+updateFunctionComponent @ react-dom-client.development.js:8897
+beginWork @ react-dom-client.development.js:10522
+runWithFiberInDEV @ react-dom-client.development.js:1518
+performUnitOfWork @ react-dom-client.development.js:15130
+workLoopSync @ react-dom-client.development.js:14956
+renderRootSync @ react-dom-client.development.js:14936
+performWorkOnRoot @ react-dom-client.development.js:14417
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
+performWorkUntilDeadline @ scheduler.development.js:45
+<OrderConfirmation>
+(anonymous) @ react-jsx-dev-runtime.development.js:336
+App @ App.js:35
+react-stack-bottom-frame @ react-dom-client.development.js:23863
+renderWithHooksAgain @ react-dom-client.development.js:5629
+renderWithHooks @ react-dom-client.development.js:5541
+updateFunctionComponent @ react-dom-client.development.js:8897
+beginWork @ react-dom-client.development.js:10522
+runWithFiberInDEV @ react-dom-client.development.js:1518
+performUnitOfWork @ react-dom-client.development.js:15130
+workLoopSync @ react-dom-client.development.js:14956
+renderRootSync @ react-dom-client.development.js:14936
+performWorkOnRoot @ react-dom-client.development.js:14417
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
+performWorkUntilDeadline @ scheduler.development.js:45
+<App>
+(anonymous) @ react-jsx-dev-runtime.development.js:336
+./src/index.js @ index.js:9
+(anonymous) @ react refresh:37
+__webpack_require__ @ bootstrap:22
+(anonymous) @ startup:7
+(anonymous) @ startup:7
+Controller
+[HttpPost("OrderNow")]
+public async Task<IActionResult> Post([FromBody] ordernowdto orderRequest)
 {
-    public class ProductManagement
+    try
     {
-        [Key]
-        public int ProductId { get; set; } 
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public decimal Price { get; set; }
-        public string Category { get; set; } = string.Empty;
-        public string ImageURL { get; set; } = string.Empty;
+        // Extract user ID from claims
+        var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+        Console.WriteLine(userIdClaim);
+        if (userIdClaim == null)
+        {
+            return Unauthorized("User ID not found in claims.");
+        }
+        var userId = int.Parse(userIdClaim.Value);
+        // Fetch product details
+        var product = await _orderManagementRepository.GetProductByIdAsync(orderRequest.ProductID);
+        if (product == null)
+        {
+            return NotFound($"Product with ID {orderRequest.ProductID} not found.");
+        }
+        // Fetch user details
+        var user = await _orderManagementRepository.GetUserByIdAsync(userId);
+        if (user == null)
+        {
+            return NotFound($"User with ID {userId} not found.");
+        }
+        // Map and compute order details
+        var order = _mapper.Map<OrderManagement>(orderRequest);
+        order.UserID = userId; // Set user ID
+        order.TotalPrice = orderRequest.Quantity * product.Price; // Compute total price
+        order.OrderStatus = "Placed"; // Set order status
+        order.ProductManagement = product;
+        order.User = user;
+        order.ProductName = product.Name; // Set product name
+        order.ImageURL = product.ImageURL; // Set product image URL
+        // Add order to repository
+        await _orderManagementRepository.AddOrderAsync(order);
+        // Map response
+        var orderResponse = _mapper.Map<OrderManagementDTO>(order);
+        return CreatedAtAction(nameof(GetOrder), new { id = order.OrderID }, orderResponse);
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "An error occurred while placing an order.");
+        return StatusCode(500, "Internal server error");
     }
 }
-
-
-namespace Walmart.Models.Domain
+public class ordernowdto
 {
-    public class OrderManagement
-    {
-        [Key]
-        public int OrderID { get; set; }
-        [ForeignKey("User")]
-        public int UserID { get; set; }
-        [ForeignKey("ProductManagement")]
-        public int ProductID { get; set; }
-        public int Quantity { get; set; }
-        public decimal TotalPrice { get; set; }
-        public string ShippingAddress { get; set; } = string.Empty;
-        public string OrderStatus { get; set; } = string.Empty;
-        public string PaymentStatus { get; set; } = string.Empty;
+    public int UserID { get; set; }
+    public int ProductID { get; set; }
+    public int Quantity { get; set; }
+    public decimal TotalPrice { get; set; }
+    public string ShippingAddress { get; set; }
+    public string OrderStatus { get; set; }
+    public string PaymentStatus { get; set; }
 
-        public ProductManagement ProductManagement { get; set; } = new ProductManagement();
-        public User User { get; set; } = new User();
-        public List<OrderItem> OrderItems { get; set; }
-    }
-}
-namespace Walmart.Models.DTO
-{
-    public class OrderManagementDTO
-    {
-        public int UserID { get; set; }
-        public int ProductID { get; set; }
-        public int Quantity { get; set; }
-        public decimal TotalPrice { get; set; }
-        public string ShippingAddress { get; set; }
-        public string OrderStatus { get; set; }
-        public string PaymentStatus { get; set; }
-    }
-
+    public string ProductName { get; set; } // Product name
+    public string ImageURL { get; set; }
 
 }
-OrderManagementRepository.cs
-public async Task AddOrderAsync(OrderManagement order)
+public class OrderManagement
 {
-    await _dbContext.OrderManagements.AddAsync(order);
-    await _dbContext.SaveChangesAsync();
+    [Key]
+    public int OrderID { get; set; }
+    [ForeignKey("User")]
+    public int UserID { get; set; }
+    [ForeignKey("ProductManagement")]
+    public int ProductID { get; set; }
+    public int Quantity { get; set; }
+    public decimal TotalPrice { get; set; }
+    public string ShippingAddress { get; set; } = string.Empty;
+    public string OrderStatus { get; set; } = string.Empty;
+    public string PaymentStatus { get; set; } = string.Empty;
+ 
+ 
+    public string ProductName { get; set; } = string.Empty; // Product name
+    public string ImageURL { get; set; } = string.Empty;
+ 
+ 
+    public ProductManagement ProductManagement { get; set; } = new ProductManagement();
+    public User User { get; set; } = new User();
+    public List<OrderItem> OrderItems { get; set; }
+}
+OrderManagementRepository
+public async Task<OrderManagement> GetOrderByIdAsync(int id)
+{
+    return await _dbContext.OrderManagements
+        .Include(o => o.User)
+        .Include(o => o.ProductManagement)
+        .FirstOrDefaultAsync(o => o.OrderID == id);
 }
 public async Task<ProductManagement> GetProductByIdAsync(int id)
 {
     return await _dbContext.ProductManagements.FindAsync(id);
 }
+public async Task<User> GetUserByIdAsync(int id)
+{
+    return await _dbContext.Users.FindAsync(id);
+}
+Auth.cs
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using Walmart.Models.DTO;
+using Walmart.Repositories.Interface;
+using Walmart.Helpers;
+using Walmart.Models.Domain;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
+
+namespace Walmart.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AuthController : ControllerBase
+    {
+        private readonly IUserRepository _userRepository;
+        private readonly IAdminRepository _adminRepository;
+        private readonly JwtHelper _jwtHelper;
+        private readonly IMapper _mapper;
+        private readonly ILogger<AuthController> _logger;
+
+        public AuthController(
+            IUserRepository userRepository,
+            IAdminRepository adminRepository,
+            JwtHelper jwtHelper,
+            IMapper mapper,
+            ILogger<AuthController> logger)
+        {
+            _userRepository = userRepository;
+            _adminRepository = adminRepository;
+            _jwtHelper = jwtHelper;
+            _mapper = mapper;
+            _logger = logger;
+        }
+
+
+        [HttpPost("User_Registration")]
+        public async Task<IActionResult> RegisterUser([FromBody] RegisterDTO registerDTO)
+        {
+            try
+            {
+                if (await _userRepository.GetUserByEmailAsync(registerDTO.Email) != null)
+                    return BadRequest("User already exists");
+
+                var user = _mapper.Map<User>(registerDTO);
+                user.Role = "User";
+
+                // Hash the password before storing it
+                var passwordHasher = new PasswordHasher<User>();
+                user.Password = passwordHasher.HashPassword(user, registerDTO.Password);
+
+                await _userRepository.AddUserAsync(user);
+                return Ok("User registered successfully");
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred during User Registration");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+
+
+        [HttpPost("Admin_Registration")]
+        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterDTO registerDTO)
+        {
+            try
+            {
+                if (await _adminRepository.GetAdminByEmailAsync(registerDTO.Email) != null)
+                    return BadRequest("Admin already exists");
+
+                var admin = _mapper.Map<Admin>(registerDTO);
+                admin.Role = "Admin";
+
+                // Hash the password before storing it
+                var passwordHasher = new PasswordHasher<Admin>();
+                admin.Password = passwordHasher.HashPassword(admin, registerDTO.Password);
+
+                await _adminRepository.AddAdminAsync(admin);
+                return Ok("Admin registered successfully");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred during Admin Registration");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+
+        [HttpPost("User_Login")]
+        public async Task<IActionResult> UserLogin([FromBody] LoginDTO loginDTO)
+        {
+            try
+            {
+                var user = await _userRepository.GetUserByEmailAsync(loginDTO.Email);
+                if (user == null)
+                    return Unauthorized("Invalid credentials");
+
+                var passwordHasher = new PasswordHasher<User>();
+                var result = passwordHasher.VerifyHashedPassword(user, user.Password, loginDTO.Password);
+
+                if (result == PasswordVerificationResult.Failed)
+                    return Unauthorized("Invalid credentials");
+
+                var token = _jwtHelper.GenerateToken(user.UserID, user.Email, user.Role);
+                return Ok(new { Token = token });
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred during User Login");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+
+
+        [HttpPost("Admin_Login")]
+        public async Task<IActionResult> AdminLogin([FromBody] LoginDTO loginDTO)
+        {
+            try
+            {
+                var admin = await _adminRepository.GetAdminByEmailAsync(loginDTO.Email);
+                if (admin == null)
+                    return Unauthorized("Invalid credentials");
+
+                var passwordHasher = new PasswordHasher<Admin>();
+                var result = passwordHasher.VerifyHashedPassword(admin, admin.Password, loginDTO.Password);
+
+                if (result == PasswordVerificationResult.Failed)
+                    return Unauthorized("Invalid credentials");
+
+                var token = _jwtHelper.GenerateToken(admin.AdminID, admin.Email, admin.Role);
+                return Ok(new { Token = token });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred during Admin Login");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+    }
+}
+Program.cs
+using Microsoft.EntityFrameworkCore;
+using Walmart.Data;
+using Walmart.Helpers;
+using Walmart.Repositories.Interface;
+using Walmart.Repositories.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+// Add DbContext
+builder.Services.AddDbContext<HeroDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Add Repository Registrations
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+builder.Services.AddScoped<IProductManagementRepository, ProductManagementRepository>();
+builder.Services.AddScoped<IOrderManagementRepository, OrderManagementRepository>();
+builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", builder =>
+    {
+        builder
+            .WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
+// Add JwtHelper
+builder.Services.AddSingleton<JwtHelper>();
+
+// Add Controllers and Swagger
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Walmart", Version = "v1" });
+    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = JwtBearerDefaults.AuthenticationScheme
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = JwtBearerDefaults.AuthenticationScheme
+                },
+                Scheme = "Oauth2",
+                Name = JwtBearerDefaults.AuthenticationScheme,
+                In = ParameterLocation.Header
+            },
+            new List<string>()
+        }
+    });
+});
+
+// Add Authentication and JWT Configuration
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp",
+        builder => builder.WithOrigins("http://localhost:3000") // React frontend URL
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
+
+
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline
+
+app.UseCors("AllowReactApp");
+
+// Configure the HTTP request pipeline
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseCors("AllowReactApp");
+app.MapControllers();
+
+app.Run();
+Mappings
+
+        // OrderItem Mappings
+        CreateMap<OrderItem, CartItemDetailsDTO>().ReverseMap();
+        CreateMap<OrderItem, OrderManagementDTO>().ReverseMap();
+
+        // OrderManagement Mappings
+        CreateMap<OrderManagement, OrderManagementDTO>().ReverseMap();
+        CreateMap<OrderManagement, Checkout>().ReverseMap();
+        CreateMap<OrderManagement, OrderManagedto>().ReverseMap();
+        CreateMap<OrderManagement, ordernowdto>().ReverseMap();
+FRONTEND
+Login.jsx
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { FaUser, FaLock } from "react-icons/fa";
+import "../LoginForm/LoginForm.css";
+import { Link } from "react-router-dom";
+
+const LoginForm = () => {
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      console.log("🚀 User already logged in, redirecting...");
+      navigate("/dashboard");
+    }
+  }, [navigate]);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleRememberMe = (e) => {
+    setRememberMe(e.target.checked);
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post("https://localhost:7162/api/Auth/User_Login", formData);
+
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        setSuccessMessage("Login successful! Redirecting...");
+        setTimeout(() => navigate("/dashboard"), 1500);
+      } else {
+        throw new Error("Login failed. No token received.");
+      }
+    } catch (err) {
+      setError(err.response?.data || "Invalid email or password. Try again.");
+    }
+  };
+
+  return (
+    <div className="wrapper">
+      <form onSubmit={handleLogin}>
+        <h1>Login</h1>
+        <div className="input-box">
+          <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
+          <FaUser className="icon" />
+        </div>
+        <div className="input-box">
+          <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
+          <FaLock className="icon" />
+        </div>
+
+        <div className="remember-forgot">
+          <label>
+            <input type="checkbox" checked={rememberMe} onChange={handleRememberMe} /> Remember Me
+          </label>
+          <Link to="/forgot-password">Forgot Password?</Link>
+        </div>
+
+        {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
+        {successMessage && <p style={{ color: "green", textAlign: "center" }}>{successMessage}</p>}
+
+        <button type="submit">Login</button>
+        <div className="register-link">
+          <p>New user? <Link to="/register">Create an account</Link></p>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default LoginForm;
+import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
+import {jwtDecode} from "jwt-decode"; // Install: npm install jwt-decode
+import "./OrderConfirmation.css";
+
+const OrderConfirmation = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [order, setOrder] = useState(location.state?.order || {});
+    const [userDetails, setUserDetails] = useState({});
+    const [shippingAddress, setShippingAddress] = useState("");
+    const [paymentMode, setPaymentMode] = useState("Cash on Delivery");
+    const token = localStorage.getItem("token");
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        console.log(token);
+        if (!token) {
+          alert("Session expired. Please log in again.");
+          navigate("/login");
+          return;
+      }
+  
+      // Decode token and extract user ID
+      const decodedToken = jwtDecode(token);
+      console.log(decodedToken);
+    setUserDetails(prev => ({ ...prev, userID: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] })); // Adjust key based on token structure
+  }, [navigate]);
+
+    const handleQuantityChange = (change) => {
+        setOrder((prevOrder) => ({
+            ...prevOrder,
+            quantity: Math.max(1, prevOrder.quantity + change),
+            totalPrice: (prevOrder.quantity + change) * prevOrder.totalPrice / prevOrder.quantity, 
+        }));
+    };
+
+    const handleConfirmOrder = async () => {
+        const token = sessionStorage.getItem("token");
+
+        const orderRequest = {
+          userID: userDetails.userID,
+          productID: order.productID,
+          quantity: order.quantity,
+          totalPrice: order.totalPrice,
+          shippingAddress: shippingAddress || userDetails.shippingAddress,
+          orderStatus: "Placed",
+          paymentStatus: paymentMode,
+          productName: order.productName,
+          imageURL: order.imageURL,
+      };
+
+      console.log(orderRequest);
+        const response = await axios.post("https://localhost:7162/api/OrderManagement/OrderNow", orderRequest, {
+          headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.status === 201) {
+          alert("Order placed successfully! ✅");
+          navigate("/orders");
+      }
+    };
+
+    return (
+        <div className="order-confirmation-container">
+            <h2>Confirm Your Order</h2>
+            <div className="order-details">
+                <img src={order.imageURL || "default-product.png"} alt={order.productName} />
+                <h3>{order.productName}</h3>
+                <p>Quantity:
+                    <button onClick={() => handleQuantityChange(-1)}>−</button>
+                    {order.quantity}
+                    <button onClick={() => handleQuantityChange(1)}>+</button>
+                </p>
+                <p>Total Price: ₹{order.totalPrice}</p>
+            </div>
+
+            <div className="user-details">
+                <h3>Your Details</h3>
+                <p><strong>Name:</strong> {userDetails.name}</p>
+                <p><strong>Email:</strong> {userDetails.email}</p>
+                <p><strong>Shipping Address:</strong>
+                    <input
+                        type="text"
+                        value={shippingAddress}
+                        onChange={(e) => setShippingAddress(e.target.value)}
+                    />
+                </p>
+            </div>
+
+            <div className="payment-method">
+                <h3>Payment Method</h3>
+                <select value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)}>
+                    <option value="UPI">UPI (GPay, PhonePe, Paytm)</option>
+                    <option value="Net Banking">Net Banking</option>
+                    <option value="Cash on Delivery">Cash on Delivery</option>
+                </select>
+            </div>
+
+            <button className="confirm-order-btn" onClick={handleConfirmOrder}>
+                Place Order ✅
+            </button>
+        </div>
+    );
+};
+
+export default OrderConfirmation;
+Order.jsx
+import React, { useEffect, useState } from "react";
+import "./Order.css";
+
+const Orders = () => {
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    fetch("https://localhost:7162/api/OrderManagement/Your_Orders/1", { // Replace 1 with actual UserID
+      method: "GET",
+      headers: { "Authorization": `Bearer ${token}` },
+    })
+      .then((res) => res.json())
+      .then((data) => setOrders(data))
+      .catch((error) => console.error("Error fetching orders:", error));
+  }, []);
+
+  const handleCancelOrder = async (orderID) => {
+    const token = localStorage.getItem("token");
+    
+    try {
+      const response = await fetch(`https://localhost:7162/api/OrderManagement/Delete_the_Order?id=${orderID}`, {
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${token}` },
+      });
+
+      if (!response.ok) throw new Error(`Failed to cancel order: ${response.status} (${response.statusText})`);
+
+      setOrders(orders.filter(order => order.orderID !== orderID));
+      alert("Order canceled successfully! ❌");
+    } catch (error) {
+      console.error("Error canceling order:", error);
+    }
+  };
+
+  return (
+    <div className="orders-container">
+      <h2>📦 Your Orders</h2>
+
+      {orders.length === 0 ? (
+        <p>No orders placed yet.</p>
+      ) : (
+        <div className="order-items">
+          {orders.map((order) => (
+            <div key={order.orderID} className="order-item">
+              <h3>{order.productName}</h3>
+              <p>₹{order.totalPrice} - {order.quantity} Items</p>
+              <p>Status: {order.orderStatus}</p>
+              <button className="cancel-btn" onClick={() => handleCancelOrder(order.orderID)}>Cancel Order ❌</button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Orders;
