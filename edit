@@ -1,90 +1,105 @@
-import React, { useEffect, useState } from "react";
-import "./Order.css";
-
-const Orders = () => {
-  const [orders, setOrders] = useState([]);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    
-    if (!token) {
-      console.error("No token found");
-      return;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+ 
+public interface IFilm
+{
+    string Title { get; set; }
+    int Year { get; set; }
+    string Genre { get; set; }
+    bool OscarNominated { get; set; }
+    int StreamingCount { get; set; }
+}
+ 
+public class Film : IFilm
+{
+    public string Title { get; set; }
+    public int Year { get; set; }
+    public string Genre { get; set; }
+    public bool OscarNominated { get; set; }
+    public int StreamingCount { get; set; }
+ 
+    public Film(string title, string genre, int year, bool oscarNominated, int streamingCount)
+    {
+        Title = title;
+        Genre = genre;
+        Year = year;
+        OscarNominated = oscarNominated;
+        StreamingCount = streamingCount;
     }
-
-    // Decode the JWT token and try to extract the user ID
-    const decodedToken = JSON.parse(atob(token.split('.')[1])); // Decode the token (payload part)
-    const userId = decodedToken?.sub || decodedToken?.nameid || decodedToken?.user_id; // Check for different claims
-
-    if (!userId) {
-      console.error("User ID not found in token");
-      return;
+}
+ 
+public class FilmLibrary
+{
+    private List<Film> films = new List<Film>();
+ 
+    public void AddFilm(Film film)
+    {
+        films.Add(film);
     }
-
-    // Now we have the userId, fetch orders
-    fetchOrders(userId);
-  }, []);
-
-  const fetchOrders = async (userId) => {
-    const token = localStorage.getItem("token");
-    
-    try {
-      const response = await fetch(`https://localhost:7162/api/OrderManagement/Your_Orders`, {
-        method: "GET",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch orders: ${response.status} (${response.statusText})`);
-      }
-
-      const data = await response.json();
-      setOrders(data);
-    } catch (error) {
-      console.error("Error fetching orders:", error);
+ 
+    public List<Film> GetFilms()
+    {
+        return films;
     }
-  };
-
-  const handleCancelOrder = async (orderID) => {
-    const token = localStorage.getItem("token");
-
-    try {
-      const response = await fetch(`https://localhost:7162/api/OrderManagement/Delete_the_Order?id=${orderID}`, {
-        method: "DELETE",
-        headers: { "Authorization": `Bearer ${token}` },
-      });
-
-      if (!response.ok) throw new Error(`Failed to cancel order: ${response.status} (${response.statusText})`);
-
-      setOrders(orders.filter((order) => order.orderID !== orderID));
-      alert("Order canceled successfully! ❌");
-    } catch (error) {
-      console.error("Error canceling order:", error);
+ 
+    public List<Film> FilterByGenre(string genre)
+    {
+        return films.Where(f => f.Genre.Equals(genre, StringComparison.OrdinalIgnoreCase)).ToList();
     }
-  };
-
-  return (
-    <div className="orders-container">
-      <h2>📦 Your Orders</h2>
-
-      {orders.length === 0 ? (
-        <p>No orders placed yet.</p>
-      ) : (
-        <div className="order-items">
-          {orders.map((order) => (
-            <div key={order.orderID} className="order-item">
-              <h3>{order.productName}</h3>
-              <p>₹{order.totalPrice} - {order.quantity} Items</p>
-              <p>Status: {order.orderStatus}</p>
-              <button className="cancel-btn" onClick={() => handleCancelOrder(order.orderID)}>Cancel Order ❌</button>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default Orders;
+ 
+    public List<Film> FilterByYear(int year)
+    {
+        return films.Where(f => f.Year == year).ToList();
+    }
+ 
+    public List<Film> FilterByOscarNominations(bool isNominated)
+    {
+        return films.Where(f => f.OscarNominated == isNominated).ToList();
+    }
+ 
+    public List<Film> FilterByStreamingCount(int streamingCount)
+    {
+        return films.Where(f => f.StreamingCount >= streamingCount).ToList();
+    }
+}
+ 
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Example usage
+        FilmLibrary library = new FilmLibrary();
+        
+        // Add films to the library
+        library.AddFilm(new Film("The Shawshank Redemption", "Drama", 1994, false, 1000));
+        library.AddFilm(new Film("The Godfather", "Crime", 1972, true, 500));
+        library.AddFilm(new Film("The Dark Knight", "Action", 2008, true, 2000));
+        library.AddFilm(new Film("The Lord of the Rings", "Fantasy", 2001, true, 1500));
+ 
+        // Filter and display results
+        Console.WriteLine("List of films filtered by genre \"Drama\":");
+        foreach (var film in library.FilterByGenre("Drama"))
+        {
+            Console.WriteLine($"- \"{film.Title}\"");
+        }
+ 
+        Console.WriteLine("\nList of films filtered by year 2001:");
+        foreach (var film in library.FilterByYear(2001))
+        {
+            Console.WriteLine($"- \"{film.Title}\"");
+        }
+ 
+        Console.WriteLine("\nList of films filtered by Oscar nominations (true):");
+        foreach (var film in library.FilterByOscarNominations(true))
+        {
+            Console.WriteLine($"- \"{film.Title}\"");
+        }
+ 
+        Console.WriteLine("\nList of films filtered by streaming count (1000 and above):");
+        foreach (var film in library.FilterByStreamingCount(1000))
+        {
+            Console.WriteLine($"- \"{film.Title}\"");
+        }
+    }
+}
